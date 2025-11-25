@@ -114,6 +114,25 @@ MoodBasedMusicProject/
 | (Plays Songs)    |
 +------------------+
 
+## OOPs (Object-Oriented Programming)
+- Song.java is a POJO class using encapsulation with private variables and public getters/setters.
+- Inheritance is applied as MoodServlet extends HttpServlet.
+- Abstraction is achieved through separate layers (Controller, Service, DAO).
+- Method overriding is used in doPost() from HttpServlet.
+- Classes are modular and reusable, following clean object-oriented design.
+
+## Multithreading in Servlets
+- Servlets are inherently multithreaded; each HTTP request is processed in a separate thread.
+- MoodServlet handles multiple user requests simultaneously.
+- Only request-scoped variables are used, ensuring thread safety.
+- No shared mutable state is maintained across requests.
+
+## Java Collection Framework
+- List<Song> is used to store multiple songs retrieved from DAO.
+- ArrayList is preferred due to its fast traversal and dynamic resizing.
+- Collections are used while iterating in DAO and while displaying data in JSP.
+- Batch insertion into database also utilizes collections for efficient handling.
+
 
 ## 💻 Key Code Snippets
 
@@ -134,6 +153,7 @@ CREATE TABLE SONG (
     mood VARCHAR(50) NOT NULL,
     url VARCHAR(255) NOT NULL
 );
+
 ### SongDAO.java
 public class SongDAO {
 
