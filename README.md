@@ -1,7 +1,7 @@
 # MoodBasedMusicProject
-The project is primarily designed for academic demonstration but allows scalable extension. It highlights practical implementation of JSP, Servlets, DAO pattern, MVC architecture, database concepts, and flow control using Java-based web technologies. 
+The project is primarily designed for academic demonstration but allows scalable extension. It highlights practical implementation of JSP, JDBC, Servlets, DAO pattern, MVC architecture, database concepts, and flow control using Java-based web technologies. 
 # 🎵 Mood-Based Music Recommendation Web App  
-(Java Servlets + JSP + DAO + MVC)
+(Java Servlets + JSP + JDBC + MYSQl + DAO + MVC)
 
 ---
 
@@ -117,13 +117,44 @@ MoodBasedMusicProject/
 
 ## 💻 Key Code Snippets
 
-### `MoodServlet.java`
-```java
-protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String mood = req.getParameter("mood");
-    List<Song> songs = new MoodService().getSongsForMood(mood);
-    req.setAttribute("songs", songs);
-    req.getRequestDispatcher("result.jsp").forward(req, resp);
-}
+## 🗄️ Database & JDBC Connectivity (Backend Layer)
+
+The application uses **MySQL database** and **JDBC (Java Database Connectivity)** to fetch songs based on user mood.
+
+### 🔹 Database Structure
+```sql 
+CREATE DATABASE IF NOT EXISTS mood_music_db;
+USE mood_music_db;
+
+CREATE TABLE SONG (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    artist VARCHAR(100) NOT NULL,
+    album VARCHAR(100),
+    mood VARCHAR(50) NOT NULL,
+    url VARCHAR(255) NOT NULL
+);
+### SongDAO.java
+public class SongDAO {
+
+    private static final String URL = "jdbc:mysql://localhost:3306/moodappdb";
+    private static final String USER = "root";
+    private static final String PASS = "Samriddh_009";
+
+    // Establish database connection
+    public Connection getConnection() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver"); // Load JDBC driver
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+
+###  Servlet
+// MoodServlet acts as the Controller in the MVC architecture.
+// It handles HTTP POST requests triggered when the user submits mood from index.jsp.
+// It calls MoodService to apply business logic and retrieve songs based on the mood.
+// The processed data is forwarded to result.jsp, which acts as the View in MVC.
+// @WebServlet("/mood") maps this servlet to the URL path "/mood".
+// RequestDispatcher.forward() transfers data to JSP without changing the URL,
+// ensuring server-side rendering and proper request attribute handling.
+
 
         
