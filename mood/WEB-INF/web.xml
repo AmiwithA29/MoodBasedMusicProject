@@ -1,0 +1,13 @@
+<!-- web.xml - Deployment descriptor (basic mapping) -->
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         version="4.0">
+    <!-- Servlet mapping can be done via @WebServlet annotation as well -->
+    <servlet>
+        <servlet-name>MoodServlet</servlet-name>
+        <servlet-class>com.moodapp.servlets.MoodServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MoodServlet</servlet-name>
+        <url-pattern>/MoodServlet</url-pattern>
+    </servlet-mapping>
+</web-app>

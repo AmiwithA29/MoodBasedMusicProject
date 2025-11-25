@@ -1,0 +1,180 @@
+# MoodBasedMusicProject
+The project is primarily designed for academic demonstration but allows scalable extension. It highlights practical implementation of JSP, JDBC, Servlets, DAO pattern, MVC architecture, database concepts, and flow control using Java-based web technologies. 
+# 🎵 Mood-Based Music Recommendation Web App  
+(Java Servlets + JSP + JDBC + MYSQl + DAO + MVC)
+
+---
+
+## 📌 Overview
+This repository contains a Java-based web application that recommends songs based on user mood. It demonstrates **MVC architecture**, **Servlet lifecycle**, **DAO pattern**, and optional **database/API integration**.  
+Designed for **academic project submission with scalable structure**.
+
+---
+
+## 📂 Included for Review
+- `src/` – Complete Java source code (Servlet, Service, DAO, Model)  
+- `WebContent/` – JSP pages (UI)  
+- `WEB-INF/web.xml` – Deployment descriptor  
+- `WEB-INF/lib/` – Required JARs (e.g., json-20210307.jar)  
+- `project_documentation.pdf` – Theory, Flowchart, UML, ER Diagram  
+- `README.md` – (this file)
+
+---
+
+## 🛠 Technologies Used
+| Layer | Technology |
+|-------|------------|
+| Frontend | JSP (`index.jsp`, `result.jsp`) |
+| Controller | Java Servlet (`MoodServlet.java`) |
+| Business Logic | `MoodService.java` |
+| Data Access | `SongDAO.java` |
+| Model | `Song.java` |
+| Optional DB | MySQL (JDBC Driver) |
+| API Parsing | `org.json` |
+| Deployment | WAR (Tomcat / Servlet 6.0) |
+
+---
+
+## 📁 Project Structure
+  
+MoodBasedMusicProject/
+├── src/
+│   ├── model/
+│   │   └── Song.java
+│   ├── dao/
+│   │   └── SongDAO.java
+│   ├── service/
+│   │   └── MoodService.java
+│   └── servlet/
+│       └── MoodServlet.java
+│
+├── WebContent/
+│   ├── index.jsp
+│   └── result.jsp
+│
+└── WEB-INF/
+    ├── web.xml
+    └── lib/
+        └── json-20210307.jar
+
+---
+
+## Flowchart -
+
++------------------+
+|      User        |
++------------------+
+          |
+          v
++------------------+
+|   index.jsp      |
+|  (Enter Mood)    |
++------------------+
+          |
+          v
++------------------+
+|   MoodServlet    |
+|  (Controller)    |
++------------------+
+          |
+          v
++------------------+
+|   MoodService    |
+| (Business Logic) |
++------------------+
+          |
+          v
++------------------+
+|    SongDAO       |
+| (Data Access)    |
++------------------+
+          |
+          v
++------------------+
+|     JDBC Layer   |
+| (DriverManager / |
+|   DataSource)    |
++------------------+
+          |
+          v
++------------------+
+|   Database (SQL) |
+|  SONG Table      |
++------------------+
+          |
+          v
++------------------+
+|   result.jsp     |
+| (Display Songs)  |
++------------------+
+          |
+          v
++------------------+
+|      User        |
+| (Plays Songs)    |
++------------------+
+
+## OOPs (Object-Oriented Programming)
+- Song.java is a POJO class using encapsulation with private variables and public getters/setters.
+- Inheritance is applied as MoodServlet extends HttpServlet.
+- Abstraction is achieved through separate layers (Controller, Service, DAO).
+- Method overriding is used in doPost() from HttpServlet.
+- Classes are modular and reusable, following clean object-oriented design.
+
+## Multithreading in Servlets
+- Servlets are inherently multithreaded; each HTTP request is processed in a separate thread.
+- MoodServlet handles multiple user requests simultaneously.
+- Only request-scoped variables are used, ensuring thread safety.
+- No shared mutable state is maintained across requests.
+
+## Java Collection Framework
+- List<Song> is used to store multiple songs retrieved from DAO.
+- ArrayList is preferred due to its fast traversal and dynamic resizing.
+- Collections are used while iterating in DAO and while displaying data in JSP.
+- Batch insertion into database also utilizes collections for efficient handling.
+
+
+## 💻 Key Code Snippets
+
+## 🗄️ Database & JDBC Connectivity (Backend Layer)
+
+The application uses **MySQL database** and **JDBC (Java Database Connectivity)** to fetch songs based on user mood.
+
+### 🔹 Database Structure
+```sql 
+CREATE DATABASE IF NOT EXISTS mood_music_db;
+USE mood_music_db;
+
+CREATE TABLE SONG (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    artist VARCHAR(100) NOT NULL,
+    album VARCHAR(100),
+    mood VARCHAR(50) NOT NULL,
+    url VARCHAR(255) NOT NULL
+);
+
+### SongDAO.java
+public class SongDAO {
+
+    private static final String URL = "jdbc:mysql://localhost:3306/moodappdb";
+    private static final String USER = "root";
+    private static final String PASS = "Samriddh_009";
+
+    // Establish database connection
+    public Connection getConnection() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver"); // Load JDBC driver
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+
+###  Servlet
+// MoodServlet acts as the Controller in the MVC architecture.
+// It handles HTTP POST requests triggered when the user submits mood from index.jsp.
+// It calls MoodService to apply business logic and retrieve songs based on the mood.
+// The processed data is forwarded to result.jsp, which acts as the View in MVC.
+// @WebServlet("/mood") maps this servlet to the URL path "/mood".
+// RequestDispatcher.forward() transfers data to JSP without changing the URL,
+// ensuring server-side rendering and proper request attribute handling.
+
+
+        
