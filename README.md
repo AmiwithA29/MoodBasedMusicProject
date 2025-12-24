@@ -141,40 +141,133 @@ MoodBasedMusicProject/
 The application uses **MySQL database** and **JDBC (Java Database Connectivity)** to fetch songs based on user mood.
 
 ### 🔹 Database Structure
-```sql 
+
+```
+-- Create database for mood based music app
 CREATE DATABASE IF NOT EXISTS mood_music_db;
+
+-- Select database
 USE mood_music_db;
 
+-- Create SONG table
 CREATE TABLE SONG (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    artist VARCHAR(100) NOT NULL,
-    album VARCHAR(100),
-    mood VARCHAR(50) NOT NULL,
-    url VARCHAR(255) NOT NULL
+    id INT PRIMARY KEY AUTO_INCREMENT,      -- unique song id
+    title VARCHAR(100) NOT NULL,            -- song title
+    artist VARCHAR(100) NOT NULL,           -- artist name
+    album VARCHAR(100),                     -- album name (optional)
+    mood VARCHAR(50) NOT NULL,              -- mood category
+    url VARCHAR(255) NOT NULL               -- song url
 );
 
-### SongDAO.java
-public class SongDAO {
+```
 
+## SongDAO.java
+
+```Code
+public class SongDAO {
     private static final String URL = "jdbc:mysql://localhost:3306/moodappdb";
     private static final String USER = "root";
     private static final String PASS = "Samriddh_009";
 
-    // Establish database connection
+    // Establish database connection using JDBC
     public Connection getConnection() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver"); // Load JDBC driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(URL, USER, PASS);
     }
+}
+```
+### Servlet
+ MoodServlet acts as the Controller in the MVC architecture.
+ It handles HTTP POST requests triggered when the user submits mood from index.jsp.
+ It calls MoodService to apply business logic and retrieve songs based on the mood.
+ The processed data is forwarded to result.jsp, which acts as the View in MVC.
+ @WebServlet("/mood") maps this servlet to the URL path "/mood".
+ RequestDispatcher.forward() transfers data to JSP without changing the URL.
 
-###  Servlet
-// MoodServlet acts as the Controller in the MVC architecture.
-// It handles HTTP POST requests triggered when the user submits mood from index.jsp.
-// It calls MoodService to apply business logic and retrieve songs based on the mood.
-// The processed data is forwarded to result.jsp, which acts as the View in MVC.
-// @WebServlet("/mood") maps this servlet to the URL path "/mood".
-// RequestDispatcher.forward() transfers data to JSP without changing the URL,
-// ensuring server-side rendering and proper request attribute handling.
+### 1️⃣ Core Feature Implementation
+
+Implemented Features
+
+User Mood Input (JSP)
+The application captures user mood through a JSP-based interface (index.jsp) using an HTML form.
+
+Request Handling (Servlet Controller)
+User requests are processed by MoodServlet, which acts as the Controller in the MVC architecture and handles HTTP POST requests.
+
+Business Logic Layer (Service)
+All mood-based decision-making and validation logic is implemented inside MoodService, ensuring separation of concerns.
+
+Database Interaction (DAO Pattern)
+SongDAO manages all database operations using JDBC, following the DAO pattern to isolate data access logic.
+
+Dynamic Result Rendering (JSP View)
+Recommended songs are dynamically displayed to the user through result.jsp using server-side rendering.
+
+
+### 2️⃣ Error Handling & Robustness
+Server-Side Error Handling
+
+Null and empty mood validation
+
+Safe handling of empty database results
+
+Exception handling during JDBC operations
+
+```code -
+if (mood == null || mood.trim().isEmpty()) {
+    return new ArrayList<>();
+}
+ ```
+### Database Safety
+PreparedStatement used
+
+SQL Injection prevention
+
+Controlled exception propagation
+
+### 3️⃣ Integration of Components
+Layer Integration
+Layer	Responsibility
+JSP	User Interface
+Servlet	Controller
+Service	Business Logic
+DAO	Data Access
+Model	Data Representation
+
+
+### 4️⃣ Event Handling & Request Processing
+Event Flow
+
+HTML form submit (POST request)
+
+Servlet doPost() execution
+
+Request forwarding using RequestDispatcher
+
+Server-side rendering
+
+### 5️⃣ Data Validation
+Client-Side
+
+Required form fields
+
+Controlled input options (mood)
+
+Server-Side (Primary)
+
+Validation inside Service layer
+
+Defensive programming approach
+
+
+# 📌 Summary
+
+The Mood-Based Music Recommendation System is a Java-based web application built using JSP, Servlets, JDBC, and the DAO pattern, following the MVC architecture. The application enables users to select a mood, processes the request through a well-structured backend, and retrieves relevant song recommendations from a database.
+
+The project emphasizes modular design, separation of concerns, and server-side rendering, ensuring maintainable and scalable code. It demonstrates practical implementation of Java web technologies, database connectivity, and clean application flow suitable for academic and real-world use.
+
+
+
 
 
         
